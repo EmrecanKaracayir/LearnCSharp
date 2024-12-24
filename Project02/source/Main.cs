@@ -1,10 +1,10 @@
 ﻿#pragma warning disable CA5394, S134, S3776
-const int BookCount = 100;
-const int MinPage   = 50;
-const int MaxPage   = 500;
+const int BookCount = 500;
+const int MinPage   = 100;
+const int MaxPage   = 800;
 const int MinRead   = 25;
 const int MaxRead   = 250;
-const int DayCount  = 60;
+const int DayCount = 365;
 
 Random random = new();
 
@@ -16,7 +16,7 @@ for (int _ = 0; _ < BookCount; _++)
     library.Add((random.Next(minValue: MinPage, maxValue: MaxPage), random.NextSingle()));
 }
 
-// Name, (Speed, KnowledgeValue, PagesToRead, PagesRead, BooksRead, TotalRead, TotalKnowledge)
+// Name, (Speed, BookValue, PagesToRead, PagesRead, BooksRead, TotalRead, TotalKnowledge)
 Dictionary<string, (int, float, int, int, int, int, float)> people = new()
 {
     { "Emre", (random.Next(minValue: MinRead, maxValue: MaxRead), 0, 0, 0, 0, 0, 0) },
@@ -38,7 +38,7 @@ for (int dayCount = 0; dayCount < DayCount; dayCount++)
     // ReSharper disable once ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
     foreach (string p in pKeys)
     {
-        // Speed, KnowledgeValue, PagesToRead, PagesRead, BooksRead, TotalRead, TotalKnowledge
+        // Speed, BookValue, PagesToRead, PagesRead, BooksRead, TotalRead, TotalKnowledge
         (int, float, int, int, int, int, float) person = people[p];
 
         // If there are no pages to read
@@ -53,7 +53,7 @@ for (int dayCount = 0; dayCount < DayCount; dayCount++)
                 // Increase total pages read
                 person.Item6 += person.Item4;
 
-                // Increase total knowledge gained with respect to knowledge value of the book
+                // Increase total knowledge gained with respect to value of the book
                 person.Item7 += person.Item4 * person.Item2;
 
                 // Reset pages read
@@ -102,7 +102,7 @@ for (int dayCount = 0; dayCount < DayCount; dayCount++)
         people[p] = person;
     }
 
-    Console.WriteLine($"DAY: {dayCount + 1}");
+    Console.WriteLine($"[DAY: {dayCount + 1}]");
     foreach (KeyValuePair<string, (int, float, int, int, int, int, float)> person in people)
     {
         Console.Write($"Name: {person.Key} | Current Pages: {person.Value.Item4:N0}    ");
